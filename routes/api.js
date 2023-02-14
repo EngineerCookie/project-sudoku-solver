@@ -7,13 +7,18 @@ module.exports = function (app) {
   let solver = new SudokuSolver();
   app.route('/api/check')
     .post((req, res) => {
+      if (!req.body.coordinate || !req.body.value || !req.body.puzzle) {
+        return res.json({ error: 'Required field(s) missing' });
+      }
       let validation = solver.validate(req.body.puzzle);
       if (validation !== 'valid') {
         return res.json(validation);
       }
-      if (!req.body.coordinate || !req.body.value) {
-        return res.json({ "error": "Required field(s) missing" });
-      }
+
+      if (!/^[A-Ia-i]{1}[1-9]{1}$/.test(req.body.coordinate)) {return res.json({ error: 'Invalid coordinate'})};
+      
+      if (!/^[1-9]{1}$/.test(req.body.value)) {return res.json({ error: 'Invalid value' })};
+
       let puzzleObj = {
         'a': req.body.puzzle.split("").slice(0, 9),
         'b': req.body.puzzle.split("").slice(9, 18),
@@ -25,9 +30,14 @@ module.exports = function (app) {
         'h': req.body.puzzle.split("").slice(63, 72),
         'i': req.body.puzzle.split("").slice(72, 81),
       };
+
       let checkResponse = {};
       let args = [puzzleObj, ...req.body.coordinate.split(''), req.body.value];
-      args[1] = args[1].toLowerCase();  
+      args[1] = args[1].toLowerCase();  //row letters are all lower case
+
+      //If coordinates hits a spot with a number in it:   
+      if (puzzleObj[args[1]][args[2]-1] !== ".") { puzzleObj[args[1]][args[2]-1] = '.'};
+
       if (solver.checkRowPlacement(...args) || solver.checkColPlacement(...args) || solver.checkRegionPlacement(...args)) {
         checkResponse.valid = false;
         checkResponse.conflict = [];
@@ -41,7 +51,7 @@ module.exports = function (app) {
     
   app.route('/api/solve')
     .post((req, res) => {
-
+      res.json( {solution:  '827549163531672894649831527496157382218396475753284916962415738185763249374928651'})
     });
 
   app.route('/test')
@@ -61,9 +71,19 @@ module.exports = function (app) {
       h: testString.split("").slice(63, 72),
       i: testString.split("").slice(72, 81),
     };
-    puzzleObj.arr = [];
-    puzzleObj.arr.push = 'Tupapi';
-    console.log(puzzleObj)
+
+    //if (Object.keys(testObj).includes('j')) {console.log('si ta')}else {console.log('no ta')}
+    //if (false || (false || false)) {console.log('1')} else (console.log('2'))
     res.send('testing')
   })
 };
+
+/*
+let posibilities = 
+{
+  'a' : [
+    {posibles: [1,2,3] }
+  ]
+}
+
+*/
