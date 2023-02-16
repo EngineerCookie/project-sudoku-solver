@@ -51,39 +51,18 @@ module.exports = function (app) {
     
   app.route('/api/solve')
     .post((req, res) => {
-      res.json( {solution:  '827549163531672894649831527496157382218396475753284916962415738185763249374928651'})
+      if (!req.body.puzzle) {return res.json({ error: 'Required field missing' });
+      };
+
+      let validation = solver.validate(req.body.puzzle);
+      if (validation !== 'valid') {
+        return res.json(validation);
+      }
+      let solve = solver.solve(req.body.puzzle);
+      if(solve == 'Could not be solved') { res.json({ error: 'Puzzle cannot be solved' })}
+
+      res.json( {solution: solve})
     });
 
-  app.route('/test')
-  .get((req, res) => {
-    let puzzleObj = {};
-    let test = '  ';
-    let testString = '135762984946381257728459613694517832812936745357824196473298561581673429269145378'
-    let testString2 ='1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.'
-    let testObj = {
-      a: testString.split("").slice(0, 9),
-      b: testString.split("").slice(9, 18),
-      c: testString.split("").slice(18, 27),
-      d: testString.split("").slice(27, 36),
-      e: testString.split("").slice(36, 45),
-      f: testString.split("").slice(45, 54),
-      g: testString.split("").slice(54, 63),
-      h: testString.split("").slice(63, 72),
-      i: testString.split("").slice(72, 81),
-    };
-
-    //if (Object.keys(testObj).includes('j')) {console.log('si ta')}else {console.log('no ta')}
-    //if (false || (false || false)) {console.log('1')} else (console.log('2'))
-    res.send('testing')
-  })
 };
 
-/*
-let posibilities = 
-{
-  'a' : [
-    {posibles: [1,2,3] }
-  ]
-}
-
-*/
