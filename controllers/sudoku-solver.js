@@ -77,24 +77,27 @@ class SudokuSolver {
           }
         };
       });
-
+      //console.log(blankArr)
       let answerToFill;
       answerToFill = blankArr.find(n => n.answers.length == 1);
-
+      //console.log(answerToFill)
       if (!answerToFill) { //LOOP ENDER
         if (!blankArr.length == 0) {
+          console.log('badending')
           //BAD ENDING
-          return 'Could not be solved'
-        }
-        //GOOD ENDING
-        let result = [];
-        for (let row in puzzleObj) {
-          puzzleObj[row].forEach(n => {
-            result.push(n);
-          })
+          response = 'Could not be solved';
+
+        } else {
+          //GOOD ENDING
+          let result = [];
+          for (let row in puzzleObj) {
+            puzzleObj[row].forEach(n => {
+              result.push(n);
+            })
+          }
+          response = result.join('');
         }
 
-      response = result.join('');
 
       }
       else { //LOOP STARTER
@@ -110,7 +113,7 @@ class SudokuSolver {
     }
 
     answerFinder() //FIRST RUN
-    return response 
+    return response
 
 
   };

@@ -60,17 +60,17 @@ suite('Unit Tests', () => {
     test('9. Logic handles an invalid region (3x3 grid) placement', () => {
         assert.equal(solver.checkRegionPlacement(testObj, 'c', '3', '2'),  true, 'Input C3 value 2 is not a valid region placement' )
     })
-/*
-    test('Valid puzzle strings pass the solver', () => {
 
+    test('10. Valid puzzle strings pass the solver', () => {
+        assert.isString(solver.solve(testString.valid), 'Returns a String if valid')
     });
 
-    test('Invalid puzzle strings fail the solver', () => {
-
+    test('11. Invalid puzzle strings fail the solver', () => {
+        assert.isNotString(solver.solve(testString.invalid), 'Returns a JSON if invalid')
     });
     
-    test('Solver returns the expected solution for an incomplete puzzle', () => {
-
-    });*/
+    test('12. Solver returns the expected solution for an incomplete puzzle', () => {
+        assert.equal(solver.solve(testString.valid), testString.completed, 'Solves the puzzle')
+    });
 });
 

@@ -60,7 +60,6 @@ module.exports = function (app) {
       }
       let solve = solver.solve(req.body.puzzle);
       if(solve == 'Could not be solved') { res.json({ error: 'Puzzle cannot be solved' })}
-
       res.json( {solution: solve})
     });
 
