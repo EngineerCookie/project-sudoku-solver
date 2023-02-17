@@ -77,13 +77,11 @@ class SudokuSolver {
           }
         };
       });
-      //console.log(blankArr)
       let answerToFill;
       answerToFill = blankArr.find(n => n.answers.length == 1);
       //console.log(answerToFill)
       if (!answerToFill) { //LOOP ENDER
         if (!blankArr.length == 0) {
-          console.log('badending')
           //BAD ENDING
           response = 'Could not be solved';
 

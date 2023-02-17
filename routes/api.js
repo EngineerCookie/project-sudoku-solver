@@ -63,5 +63,11 @@ module.exports = function (app) {
       res.json( {solution: solve})
     });
 
+    app.route('/test')
+    .get((req, res) => {
+      let testString = '...5.9..6.1.......54.8...9.89.4...6.....2.3....7........67.......1....5.75..4...2';
+      console.log(solver.solve(testString))
+      res.send('testing')
+    })
 };
 
